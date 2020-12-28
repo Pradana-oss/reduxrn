@@ -1,51 +1,80 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import { TextInput  } from 'react-native-gesture-handler';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { View, StyleSheet, Text, Button } from 'react-native';
+import {connect} from 'react-redux'
+import {View,TextInput,Text,Button,StyleSheet} from 'react-native'
+import { loginFirebase } from '../action';
+
+class Login extends Component {
 
 
-class Login extends Component{
-    state = {
-        username : '',
-        password : '',
-    }
-    
-    
-   
-    render(){
+  state = {
+  username:'',
+  password:''
+  
+  }
+
+  
+
+
+  componentDidMount(){
+  
+  console.log("ini props", this.props)
+  
+  }
+
+
+    render() {
         return (
             <View>
+                {this.props.isLogin? ( <Text> {this.props.username} {this.props.password}</Text>):null}
+               
                 <Text>Username</Text>
-                <TextInput name="username" style ={styles.textInput} onChangeText={(text)=>this.setState({username:text})}/>
+                <TextInput name ="username" style = {styles.textInput} onChangeText={(text)=>this.setState({username:text})} />
                 <Text>Password</Text>
-                <TextInput name = "Password" secureTextEntry={true} 
-                onChangeText={(text)=>this.setState({password:text})} style={styles.textInput}/>
-                <Button title = "Login"/>
+                <TextInput name ="password"  secureTextEntry={true} 
+                onChangeText={(text)=>this.setState({password:text})} style = {styles.textInput} />
+                <Button title = "Login" onPress={()=>this.props.loginFirebase(this.state.username,this.state.password)}/>
             </View>
         );
     }
 }
 
-const mapStateToProps= state =>{
-    return {
-        username :  state.username
-    }
-}
 
-mapDispatchToProps= (dispatch) => {
-    setUsername : dispatch(setUsername)
-}
+ const  mapStateToProps= (state) => {
+
+     return {
+     username : state.registerFirebase.username,
+     password : state.registerFirebase.password,
+     isLogin : state.registerFirebase.isLogin
+     }
+  
+  }
+  
+  const mapDispatchToProps = (dispatch) =>{
+  
+  
+  
+    return{
+      loginFirebase : (username, password) =>dispatch(loginFirebase(username,password)),
+      
+    
+    }
+  }
+  
 
 const styles = StyleSheet.create({
 
-    textInput: {
-        height: 40,
-        borderColor: Colors.Black,
-        borderBottomWidth : StyleSheet.hairlineWidth
-    }
+  textInput: {
+    height: 40,
+    borderColor: 'black',
+    borderBottomWidth : StyleSheet.hairlineWidth
+  
+  
+  }
+  
+  
 
-    
+
 })
 
-export default connect(mapStateToProps, mapDispatchToProps) (Login);
+
+export default connect(mapStateToProps,mapDispatchToProps) (Login);

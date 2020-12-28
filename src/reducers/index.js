@@ -1,6 +1,7 @@
 import {combineReducers} from 'redux'
-import {userReducer} from './reducername'
+import {registerFirebase} from './reducername'
 
 export default combineReducers({
-    userReducer
+ registerFirebase
+
 })
